@@ -9,10 +9,11 @@ const errorMiddleware = require('./middlewares/errorMiddleware');
 const loggerMiddleware = require('./middlewares/loggerMiddleware');
 
 // Route imports
-const authRoutes = require('./routes/authRoutes');
+const authRoutes     = require('./routes/authRoutes');
 const conflictRoutes = require('./routes/conflictRoutes');
-const statsRoutes = require('./routes/statsRoutes');
-const adminRoutes = require('./routes/adminRoutes');
+const statsRoutes    = require('./routes/statsRoutes');
+const adminRoutes    = require('./routes/adminRoutes');
+const userRoutes     = require('./routes/userRoutes');
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -57,10 +58,11 @@ app.get('/api/v1/version', (req, res) => {
 });
 
 // ─── API Routes ────────────────────────────────────────────────────────────────
-app.use('/api/v1/auth', authRoutes);
+app.use('/api/v1/auth',      authRoutes);
 app.use('/api/v1/conflicts', conflictRoutes);
-app.use('/api/v1/stats', statsRoutes);
-app.use('/api/v1/admin', adminRoutes);
+app.use('/api/v1/stats',     statsRoutes);
+app.use('/api/v1/admin',     adminRoutes);
+app.use('/api/v1/users',     userRoutes);
 
 // ─── 404 Handler ──────────────────────────────────────────────────────────────
 app.use('*', (req, res) => {
