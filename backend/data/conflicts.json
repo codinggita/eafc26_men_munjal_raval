@@ -1,0 +1,312 @@
+[
+  {
+    "conflictId": "CONF-001",
+    "name": "Syrian Civil War",
+    "type": "Civil War",
+    "status": "Active",
+    "region": "Middle East",
+    "country": "Syria",
+    "startDate": "2011-03-15",
+    "endDate": null,
+    "casualties": {
+      "military": 150000,
+      "civilian": 250000,
+      "wounded": 500000,
+      "missing": 30000
+    },
+    "economicImpact": {
+      "gdpLossBillionUSD": 530,
+      "infrastructureDamageUSD": 400000000000,
+      "displacedPeople": 6500000,
+      "unemploymentRatePercent": 55,
+      "inflationRatePercent": 84,
+      "tradeDisruptionUSD": 120000000000,
+      "aidReceivedUSD": 25000000000
+    },
+    "involvedParties": ["Syrian Government", "FSA", "ISIS", "Kurdish Forces", "Hezbollah"],
+    "weaponsUsed": ["Chemical Weapons", "Barrel Bombs", "Artillery", "Drones"],
+    "internationalSanctions": true,
+    "peaceAgreements": ["Astana Process 2017", "Geneva Talks"],
+    "description": "Syrian Civil War began in March 2011 as part of the Arab Spring and has resulted in one of the worst humanitarian crises in modern history.",
+    "tags": ["civil-war", "humanitarian-crisis", "middle-east", "refugees"]
+  },
+  {
+    "conflictId": "CONF-002",
+    "name": "Russia-Ukraine War",
+    "type": "Interstate War",
+    "status": "Active",
+    "region": "Eastern Europe",
+    "country": "Ukraine",
+    "startDate": "2022-02-24",
+    "endDate": null,
+    "casualties": {
+      "military": 200000,
+      "civilian": 30000,
+      "wounded": 350000,
+      "missing": 15000
+    },
+    "economicImpact": {
+      "gdpLossBillionUSD": 700,
+      "infrastructureDamageUSD": 150000000000,
+      "displacedPeople": 8000000,
+      "unemploymentRatePercent": 30,
+      "inflationRatePercent": 26,
+      "tradeDisruptionUSD": 200000000000,
+      "aidReceivedUSD": 80000000000
+    },
+    "involvedParties": ["Russia", "Ukraine", "NATO (Support)"],
+    "weaponsUsed": ["Missiles", "Tanks", "Drones", "Artillery", "HIMARS"],
+    "internationalSanctions": true,
+    "peaceAgreements": [],
+    "description": "Full-scale Russian invasion of Ukraine launched on February 24, 2022, causing massive economic disruption and a global food and energy crisis.",
+    "tags": ["interstate-war", "europe", "nato", "sanctions", "energy-crisis"]
+  },
+  {
+    "conflictId": "CONF-003",
+    "name": "Yemen Civil War",
+    "type": "Civil War",
+    "status": "Active",
+    "region": "Middle East",
+    "country": "Yemen",
+    "startDate": "2014-09-21",
+    "endDate": null,
+    "casualties": {
+      "military": 60000,
+      "civilian": 160000,
+      "wounded": 120000,
+      "missing": 8000
+    },
+    "economicImpact": {
+      "gdpLossBillionUSD": 89,
+      "infrastructureDamageUSD": 50000000000,
+      "displacedPeople": 4000000,
+      "unemploymentRatePercent": 70,
+      "inflationRatePercent": 40,
+      "tradeDisruptionUSD": 30000000000,
+      "aidReceivedUSD": 15000000000
+    },
+    "involvedParties": ["Houthi Movement", "Saudi-led Coalition", "Yemeni Government"],
+    "weaponsUsed": ["Air Strikes", "Missiles", "Naval Blockade"],
+    "internationalSanctions": false,
+    "peaceAgreements": ["Stockholm Agreement 2018", "UN Ceasefire 2022"],
+    "description": "Yemen civil war has caused the world's worst humanitarian crisis with famine and disease affecting millions.",
+    "tags": ["civil-war", "humanitarian", "middle-east", "famine"]
+  },
+  {
+    "conflictId": "CONF-004",
+    "name": "Afghanistan War (2001-2021)",
+    "type": "Insurgency",
+    "status": "Resolved",
+    "region": "South Asia",
+    "country": "Afghanistan",
+    "startDate": "2001-10-07",
+    "endDate": "2021-08-30",
+    "casualties": {
+      "military": 70000,
+      "civilian": 47000,
+      "wounded": 150000,
+      "missing": 5000
+    },
+    "economicImpact": {
+      "gdpLossBillionUSD": 2000,
+      "infrastructureDamageUSD": 100000000000,
+      "displacedPeople": 3500000,
+      "unemploymentRatePercent": 40,
+      "inflationRatePercent": 15,
+      "tradeDisruptionUSD": 50000000000,
+      "aidReceivedUSD": 130000000000
+    },
+    "involvedParties": ["USA", "NATO", "Afghan Government", "Taliban", "Al-Qaeda"],
+    "weaponsUsed": ["Drones", "Air Strikes", "IEDs", "Special Forces"],
+    "internationalSanctions": false,
+    "peaceAgreements": ["Doha Agreement 2020"],
+    "description": "The longest US war, spanning two decades, ending with Taliban takeover in August 2021.",
+    "tags": ["insurgency", "south-asia", "terrorism", "nato", "reconstruction"]
+  },
+  {
+    "conflictId": "CONF-005",
+    "name": "Ethiopia Tigray Conflict",
+    "type": "Civil War",
+    "status": "Resolved",
+    "region": "East Africa",
+    "country": "Ethiopia",
+    "startDate": "2020-11-04",
+    "endDate": "2022-11-02",
+    "casualties": {
+      "military": 50000,
+      "civilian": 300000,
+      "wounded": 80000,
+      "missing": 10000
+    },
+    "economicImpact": {
+      "gdpLossBillionUSD": 28,
+      "infrastructureDamageUSD": 10000000000,
+      "displacedPeople": 2500000,
+      "unemploymentRatePercent": 25,
+      "inflationRatePercent": 35,
+      "tradeDisruptionUSD": 5000000000,
+      "aidReceivedUSD": 2000000000
+    },
+    "involvedParties": ["Ethiopian Government", "TPLF", "Eritrean Forces"],
+    "weaponsUsed": ["Artillery", "Air Strikes", "Small Arms"],
+    "internationalSanctions": false,
+    "peaceAgreements": ["Pretoria Peace Agreement 2022"],
+    "description": "Conflict in Ethiopia's Tigray region resulted in a massive humanitarian crisis with hundreds of thousands of deaths from violence and famine.",
+    "tags": ["civil-war", "africa", "humanitarian", "peace-agreement"]
+  },
+  {
+    "conflictId": "CONF-006",
+    "name": "Israel-Palestine Conflict 2023",
+    "type": "Interstate War",
+    "status": "Active",
+    "region": "Middle East",
+    "country": "Palestine",
+    "startDate": "2023-10-07",
+    "endDate": null,
+    "casualties": {
+      "military": 2000,
+      "civilian": 35000,
+      "wounded": 78000,
+      "missing": 7000
+    },
+    "economicImpact": {
+      "gdpLossBillionUSD": 18,
+      "infrastructureDamageUSD": 30000000000,
+      "displacedPeople": 1900000,
+      "unemploymentRatePercent": 80,
+      "inflationRatePercent": 20,
+      "tradeDisruptionUSD": 8000000000,
+      "aidReceivedUSD": 3000000000
+    },
+    "involvedParties": ["Israel", "Hamas", "Palestinian Authority"],
+    "weaponsUsed": ["Air Strikes", "Missiles", "Ground Forces", "Naval Blockade"],
+    "internationalSanctions": false,
+    "peaceAgreements": [],
+    "description": "Military conflict in Gaza Strip following Hamas attacks on October 7, 2023, resulting in devastating humanitarian consequences.",
+    "tags": ["interstate-war", "middle-east", "humanitarian-crisis", "blockade"]
+  },
+  {
+    "conflictId": "CONF-007",
+    "name": "Sudan Civil War",
+    "type": "Civil War",
+    "status": "Active",
+    "region": "North Africa",
+    "country": "Sudan",
+    "startDate": "2023-04-15",
+    "endDate": null,
+    "casualties": {
+      "military": 15000,
+      "civilian": 12000,
+      "wounded": 33000,
+      "missing": 5000
+    },
+    "economicImpact": {
+      "gdpLossBillionUSD": 12,
+      "infrastructureDamageUSD": 8000000000,
+      "displacedPeople": 7000000,
+      "unemploymentRatePercent": 50,
+      "inflationRatePercent": 65,
+      "tradeDisruptionUSD": 4000000000,
+      "aidReceivedUSD": 1500000000
+    },
+    "involvedParties": ["SAF (Sudanese Armed Forces)", "RSF (Rapid Support Forces)"],
+    "weaponsUsed": ["Artillery", "Air Strikes", "Small Arms", "Drones"],
+    "internationalSanctions": false,
+    "peaceAgreements": [],
+    "description": "Civil war between the Sudanese Armed Forces and Rapid Support Forces, causing one of the world's largest displacement crises.",
+    "tags": ["civil-war", "africa", "displacement", "humanitarian"]
+  },
+  {
+    "conflictId": "CONF-008",
+    "name": "Myanmar Civil War",
+    "type": "Civil War",
+    "status": "Active",
+    "region": "Southeast Asia",
+    "country": "Myanmar",
+    "startDate": "2021-02-01",
+    "endDate": null,
+    "casualties": {
+      "military": 8000,
+      "civilian": 5000,
+      "wounded": 20000,
+      "missing": 3000
+    },
+    "economicImpact": {
+      "gdpLossBillionUSD": 10,
+      "infrastructureDamageUSD": 5000000000,
+      "displacedPeople": 1800000,
+      "unemploymentRatePercent": 35,
+      "inflationRatePercent": 30,
+      "tradeDisruptionUSD": 3000000000,
+      "aidReceivedUSD": 500000000
+    },
+    "involvedParties": ["Myanmar Military (Tatmadaw)", "NUG", "PDF", "Ethnic Armed Groups"],
+    "weaponsUsed": ["Air Strikes", "Artillery", "Small Arms"],
+    "internationalSanctions": true,
+    "peaceAgreements": [],
+    "description": "Civil war erupted after the military coup on February 1, 2021, with widespread resistance from civilian and ethnic forces.",
+    "tags": ["civil-war", "southeast-asia", "coup", "sanctions"]
+  },
+  {
+    "conflictId": "CONF-009",
+    "name": "Iraq War (2003-2011)",
+    "type": "Interstate War",
+    "status": "Resolved",
+    "region": "Middle East",
+    "country": "Iraq",
+    "startDate": "2003-03-20",
+    "endDate": "2011-12-15",
+    "casualties": {
+      "military": 35000,
+      "civilian": 200000,
+      "wounded": 180000,
+      "missing": 10000
+    },
+    "economicImpact": {
+      "gdpLossBillionUSD": 2000,
+      "infrastructureDamageUSD": 200000000000,
+      "displacedPeople": 4000000,
+      "unemploymentRatePercent": 45,
+      "inflationRatePercent": 50,
+      "tradeDisruptionUSD": 80000000000,
+      "aidReceivedUSD": 60000000000
+    },
+    "involvedParties": ["USA", "UK", "Coalition Forces", "Iraqi Government", "Insurgent Groups"],
+    "weaponsUsed": ["Shock and Awe Bombing", "Ground Forces", "IEDs", "Tanks"],
+    "internationalSanctions": false,
+    "peaceAgreements": ["US-Iraq Security Agreement 2008"],
+    "description": "US-led invasion of Iraq in 2003 based on WMD claims, followed by years of insurgency and sectarian violence.",
+    "tags": ["interstate-war", "middle-east", "wmd", "insurgency", "oil"]
+  },
+  {
+    "conflictId": "CONF-010",
+    "name": "Libya Civil War (2nd)",
+    "type": "Civil War",
+    "status": "Frozen",
+    "region": "North Africa",
+    "country": "Libya",
+    "startDate": "2014-05-16",
+    "endDate": null,
+    "casualties": {
+      "military": 25000,
+      "civilian": 15000,
+      "wounded": 50000,
+      "missing": 6000
+    },
+    "economicImpact": {
+      "gdpLossBillionUSD": 150,
+      "infrastructureDamageUSD": 40000000000,
+      "displacedPeople": 200000,
+      "unemploymentRatePercent": 30,
+      "inflationRatePercent": 28,
+      "tradeDisruptionUSD": 70000000000,
+      "aidReceivedUSD": 2000000000
+    },
+    "involvedParties": ["GNU (Tripoli)", "LNA (Haftar)", "Turkey", "Russia (Wagner)", "UAE"],
+    "weaponsUsed": ["Air Strikes", "Missiles", "Drones", "Mercenaries"],
+    "internationalSanctions": false,
+    "peaceAgreements": ["Berlin Process 2020", "GNU Formation 2021"],
+    "description": "Libya's second civil war split the country between rival governments, drawing in foreign powers and mercenary groups.",
+    "tags": ["civil-war", "africa", "proxy-war", "oil", "frozen-conflict"]
+  }
+]

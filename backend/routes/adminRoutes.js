@@ -1,35 +1,31 @@
 const express = require('express');
 const router = express.Router();
+const {
+  getAllUsers,
+  getUserById,
+  updateUserRole,
+  toggleUserStatus,
+  deleteUser,
+} = require('../controllers/adminController');
+const { protect, authorize } = require('../middlewares/authMiddleware');
 
-// ─── Placeholder Admin Routes ──────────────────────────────────────────────────
-// Full RBAC implementation coming in next batch (adminController.js)
+// All admin routes are protected + admin only
+router.use(protect, authorize('admin'));
 
-// GET /api/v1/admin/users
-router.get('/users', (req, res) => {
-  res.status(200).json({
-    success: true,
-    message: '✅ Admin GET all users route working — RBAC + controller coming soon',
-    data: [],
-    timestamp: new Date().toISOString(),
-  });
-});
+// GET    /api/v1/admin/users           — Get all users (with filter + pagination)
+router.get('/users', getAllUsers);
 
-// DELETE /api/v1/admin/users/:id
-router.delete('/users/:id', (req, res) => {
-  res.status(200).json({
-    success: true,
-    message: `✅ Admin DELETE user ${req.params.id} route working — controller coming soon`,
-    timestamp: new Date().toISOString(),
-  });
-});
+// GET    /api/v1/admin/users/:id       — Get single user
+router.get('/users/:id', getUserById);
 
-// PATCH /api/v1/admin/users/:id/role
-router.patch('/users/:id/role', (req, res) => {
-  res.status(200).json({
-    success: true,
-    message: `✅ Admin UPDATE role for user ${req.params.id} — controller coming soon`,
-    timestamp: new Date().toISOString(),
-  });
-});
+// PATCH  /api/v1/admin/users/:id/role  — Update user role
+router.patch('/users/:id/role', updateUserRole);
+
+// PATCH  /api/v1/admin/users/:id/status — Toggle active/inactive
+router.patch('/users/:id/status', toggleUserStatus);
+
+// DELETE /api/v1/admin/users/:id       — Soft delete user
+router.delete('/users/:id', deleteUser);
 
 module.exports = router;
+
