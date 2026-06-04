@@ -27,12 +27,12 @@ const PORT = process.env.PORT || 5000;
 // ─── Security & Parsing Middlewares ───────────────────────────────────────────
 app.use(helmet());
 app.use(cors(corsOptions));
-app.use(morgan('dev'));
+// app.use(morgan('dev')); // Disabled for clean terminal
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true, limit: '10mb' }));
 
 // ─── Request Logger ────────────────────────────────────────────────────────────
-app.use(loggerMiddleware);
+// app.use(loggerMiddleware); // Disabled for clean terminal
 
 // ─── Global Rate Limiter ───────────────────────────────────────────────────────
 app.use(generalLimiter);
@@ -121,10 +121,7 @@ app.use(errorMiddleware);
 const startServer = async () => {
   await connectDB();
   app.listen(PORT, () => {
-    console.log(`🚀 Server running on PORT ${PORT}`);
-    console.log(`📦 Environment: ${process.env.NODE_ENV}`);
-    console.log(`🔐 JWT Auth: Enabled`);
-    console.log(`⚡ Rate Limiting: Enabled`);
+    console.log(`Server running on PORT ${PORT}`);
   });
 };
 
