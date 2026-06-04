@@ -1,133 +1,157 @@
 const Conflict = require('../models/Conflict');
-const { sendSuccess, sendError } = require('../utils/responseHandler');
 
-// ─── @desc    Get dashboard overview stats
-// ─── @route   GET /api/v1/stats/overview
-// ─── @access  Public
-const getOverview = async (req, res, next) => {
+exports.getOverview = async (req, res) => {
   try {
-    const stats = await Conflict.aggregate([
+    const total    = await Conflict.countDocuments({ isDeleted: false });
+    const ongoing  = await Conflict.countDocuments({ Status: 'Ongoing',  isDeleted: false });
+    const resolved = await Conflict.countDocuments({ Status: 'Resolved', isDeleted: false });
+    const agg = await Conflict.aggregate([
       { $match: { isDeleted: false } },
-      {
-        $group: {
-          _id: null,
-          totalConflicts:     { $sum: 1 },
-          activeConflicts:    { $sum: { $cond: [{ $eq: ['$status', 'Active'] }, 1, 0] } },
-          resolvedConflicts:  { $sum: { $cond: [{ $eq: ['$status', 'Resolved'] }, 1, 0] } },
-          totalMilitary:      { $sum: '$casualties.military' },
-          totalCivilian:      { $sum: '$casualties.civilian' },
-          totalWounded:       { $sum: '$casualties.wounded' },
-          totalGDPLossBillion: { $sum: '$economicImpact.gdpLossBillionUSD' },
-          totalDisplaced:     { $sum: '$economicImpact.displacedPeople' },
-          totalAidUSD:        { $sum: '$economicImpact.aidReceivedUSD' },
-        },
-      },
-      {
-        $project: {
-          _id: 0,
-          totalConflicts: 1,
-          activeConflicts: 1,
-          resolvedConflicts: 1,
-          totalCasualties: { $add: ['$totalMilitary', '$totalCivilian', '$totalWounded'] },
-          totalGDPLossBillionUSD: '$totalGDPLossBillion',
-          totalDisplacedPeople: '$totalDisplaced',
-          totalAidReceivedUSD: '$totalAidUSD',
-        },
-      },
+      { $group: { _id: null, avgInflation: { $avg: '$Inflation_Rate_%' }, avgGdpChange: { $avg: '$GDP_Change_%' }, avgPoverty: { $avg: '$During_War_Poverty_Rate_%' }, totalWarCost: { $sum: '$Cost_of_War_USD' } } }
     ]);
-
-    return sendSuccess(res, 200, 'Overview stats fetched successfully', {
-      overview: stats[0] || {
-        totalConflicts: 0,
-        activeConflicts: 0,
-        resolvedConflicts: 0,
-        totalCasualties: 0,
-        totalGDPLossBillionUSD: 0,
-        totalDisplacedPeople: 0,
-        totalAidReceivedUSD: 0,
-      },
-    });
-  } catch (error) {
-    next(error);
-  }
+    res.json({ success: true, data: { total, ongoing, resolved, ...agg[0] } });
+  } catch (e) { res.status(500).json({ success: false, message: e.message }); }
 };
 
-// ─── @desc    Get conflicts grouped by region
-// ─── @route   GET /api/v1/stats/by-region
-// ─── @access  Public
-const getStatsByRegion = async (req, res, next) => {
+exports.getTotalConflicts = async (req, res) => {
   try {
-    const data = await Conflict.aggregate([
-      { $match: { isDeleted: false } },
-      {
-        $group: {
-          _id: '$region',
-          count:           { $sum: 1 },
-          activeCount:     { $sum: { $cond: [{ $eq: ['$status', 'Active'] }, 1, 0] } },
-          totalGDPLoss:    { $sum: '$economicImpact.gdpLossBillionUSD' },
-          totalDisplaced:  { $sum: '$economicImpact.displacedPeople' },
-          totalCasualties: {
-            $sum: {
-              $add: ['$casualties.military', '$casualties.civilian', '$casualties.wounded'],
-            },
-          },
-        },
-      },
-      { $sort: { count: -1 } },
-      {
-        $project: {
-          region: '$_id',
-          _id: 0,
-          count: 1,
-          activeCount: 1,
-          totalGDPLossBillionUSD: '$totalGDPLoss',
-          totalDisplacedPeople: '$totalDisplaced',
-          totalCasualties: 1,
-        },
-      },
-    ]);
-
-    return sendSuccess(res, 200, 'Stats by region fetched successfully', { regions: data });
-  } catch (error) {
-    next(error);
-  }
+    const count = await Conflict.countDocuments({ isDeleted: false });
+    res.json({ success: true, total: count });
+  } catch (e) { res.status(500).json({ success: false, message: e.message }); }
 };
 
-// ─── @desc    Get conflicts grouped by year
-// ─── @route   GET /api/v1/stats/by-year
-// ─── @access  Public
-const getStatsByYear = async (req, res, next) => {
+exports.getOngoingConflicts = async (req, res) => {
+  try {
+    const count = await Conflict.countDocuments({ Status: 'Ongoing', isDeleted: false });
+    res.json({ success: true, ongoing: count });
+  } catch (e) { res.status(500).json({ success: false, message: e.message }); }
+};
+
+exports.getResolvedConflicts = async (req, res) => {
+  try {
+    const count = await Conflict.countDocuments({ Status: 'Resolved', isDeleted: false });
+    res.json({ success: true, resolved: count });
+  } catch (e) { res.status(500).json({ success: false, message: e.message }); }
+};
+
+exports.getHighestInflation = async (req, res) => {
+  try {
+    const data = await Conflict.find({ isDeleted: false }).sort({ 'Inflation_Rate_%': -1 }).limit(5).select('Conflict_Name Primary_Country Inflation_Rate_%');
+    res.json({ success: true, data });
+  } catch (e) { res.status(500).json({ success: false, message: e.message }); }
+};
+
+exports.getLowestGdp = async (req, res) => {
+  try {
+    const data = await Conflict.find({ isDeleted: false }).sort({ 'GDP_Change_%': 1 }).limit(5).select('Conflict_Name Primary_Country GDP_Change_%');
+    res.json({ success: true, data });
+  } catch (e) { res.status(500).json({ success: false, message: e.message }); }
+};
+
+exports.getHighestPoverty = async (req, res) => {
+  try {
+    const data = await Conflict.find({ isDeleted: false }).sort({ 'During_War_Poverty_Rate_%': -1 }).limit(5).select('Conflict_Name Primary_Country During_War_Poverty_Rate_%');
+    res.json({ success: true, data });
+  } catch (e) { res.status(500).json({ success: false, message: e.message }); }
+};
+
+exports.getHighestFoodInsecurity = async (req, res) => {
+  try {
+    const data = await Conflict.find({ isDeleted: false }).sort({ 'Food_Insecurity_Rate_%': -1 }).limit(5).select('Conflict_Name Primary_Country Food_Insecurity_Rate_%');
+    res.json({ success: true, data });
+  } catch (e) { res.status(500).json({ success: false, message: e.message }); }
+};
+
+exports.getHighestCurrencyGap = async (req, res) => {
+  try {
+    const data = await Conflict.find({ isDeleted: false }).sort({ 'Currency_Black_Market_Rate_Gap_%': -1 }).limit(5).select('Conflict_Name Primary_Country Currency_Black_Market_Rate_Gap_%');
+    res.json({ success: true, data });
+  } catch (e) { res.status(500).json({ success: false, message: e.message }); }
+};
+
+exports.getHighestWarCost = async (req, res) => {
+  try {
+    const data = await Conflict.find({ isDeleted: false }).sort({ Cost_of_War_USD: -1 }).limit(5).select('Conflict_Name Primary_Country Cost_of_War_USD');
+    res.json({ success: true, data });
+  } catch (e) { res.status(500).json({ success: false, message: e.message }); }
+};
+
+exports.getHighestReconstructionCost = async (req, res) => {
+  try {
+    const data = await Conflict.find({ isDeleted: false }).sort({ Estimated_Reconstruction_Cost_USD: -1 }).limit(5).select('Conflict_Name Primary_Country Estimated_Reconstruction_Cost_USD');
+    res.json({ success: true, data });
+  } catch (e) { res.status(500).json({ success: false, message: e.message }); }
+};
+
+exports.getStatsByRegion = async (req, res) => {
   try {
     const data = await Conflict.aggregate([
       { $match: { isDeleted: false } },
-      {
-        $group: {
-          _id: { $year: '$startDate' },
-          count:        { $sum: 1 },
-          totalGDPLoss: { $sum: '$economicImpact.gdpLossBillionUSD' },
-          totalCasualties: {
-            $sum: {
-              $add: ['$casualties.military', '$casualties.civilian', '$casualties.wounded'],
-            },
-          },
-        },
-      },
-      { $sort: { _id: 1 } },
-      {
-        $project: {
-          year: '$_id',
-          _id: 0,
-          count: 1,
-          totalGDPLossBillionUSD: '$totalGDPLoss',
-          totalCasualties: 1,
-        },
-      },
+      { $group: { _id: '$Region', count: { $sum: 1 }, avgInflation: { $avg: '$Inflation_Rate_%' }, avgGdpChange: { $avg: '$GDP_Change_%' } } },
+      { $sort: { count: -1 } }
     ]);
-
-    return sendSuccess(res, 200, 'Stats by year fetched successfully', { years: data });
-  } catch (error) {
-    next(error);
-  }
+    res.json({ success: true, data });
+  } catch (e) { res.status(500).json({ success: false, message: e.message }); }
 };
 
-module.exports = { getOverview, getStatsByRegion, getStatsByYear };
+exports.getStatsByYear = async (req, res) => {
+  try {
+    const data = await Conflict.aggregate([
+      { $match: { isDeleted: false } },
+      { $group: { _id: '$Start_Year', count: { $sum: 1 }, avgInflation: { $avg: '$Inflation_Rate_%' } } },
+      { $sort: { _id: 1 } }
+    ]);
+    res.json({ success: true, data });
+  } catch (e) { res.status(500).json({ success: false, message: e.message }); }
+};
+
+exports.getStatsByConflictType = async (req, res) => {
+  try {
+    const data = await Conflict.aggregate([
+      { $match: { isDeleted: false } },
+      { $group: { _id: '$Conflict_Type', count: { $sum: 1 }, avgInflation: { $avg: '$Inflation_Rate_%' }, avgGdpChange: { $avg: '$GDP_Change_%' } } },
+      { $sort: { count: -1 } }
+    ]);
+    res.json({ success: true, data });
+  } catch (e) { res.status(500).json({ success: false, message: e.message }); }
+};
+
+exports.getInflationByRegion = async (req, res) => {
+  try {
+    const data = await Conflict.aggregate([
+      { $match: { isDeleted: false } },
+      { $group: { _id: '$Region', avgInflation: { $avg: '$Inflation_Rate_%' } } },
+      { $sort: { avgInflation: -1 } }
+    ]);
+    res.json({ success: true, data });
+  } catch (e) { res.status(500).json({ success: false, message: e.message }); }
+};
+
+exports.getTopGdpLoss = async (req, res) => {
+  try {
+    const data = await Conflict.find({ isDeleted: false }).sort({ 'GDP_Change_%': 1 }).limit(5).select('Conflict_Name Primary_Country GDP_Change_%');
+    res.json({ success: true, data });
+  } catch (e) { res.status(500).json({ success: false, message: e.message }); }
+};
+
+exports.getBlackMarketSummary = async (req, res) => {
+  try {
+    const data = await Conflict.aggregate([
+      { $match: { isDeleted: false } },
+      { $group: { _id: '$Black_Market_Activity_Level', count: { $sum: 1 } } },
+      { $sort: { count: -1 } }
+    ]);
+    res.json({ success: true, data });
+  } catch (e) { res.status(500).json({ success: false, message: e.message }); }
+};
+
+exports.getEconomicOverview = async (req, res) => {
+  try {
+    const total = await Conflict.countDocuments({ isDeleted: false });
+    const agg = await Conflict.aggregate([
+      { $match: { isDeleted: false } },
+      { $group: { _id: null, avgInflation: { $avg: '$Inflation_Rate_%' }, avgGdpChange: { $avg: '$GDP_Change_%' }, avgPoverty: { $avg: '$During_War_Poverty_Rate_%' }, totalWarCost: { $sum: '$Cost_of_War_USD' }, totalReconstructionCost: { $sum: '$Estimated_Reconstruction_Cost_USD' } } }
+    ]);
+    res.json({ success: true, data: { total, ...(agg[0] || {}) } });
+  } catch (e) { res.status(500).json({ success: false, message: e.message }); }
+};

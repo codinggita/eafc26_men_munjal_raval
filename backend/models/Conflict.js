@@ -1,143 +1,104 @@
 const mongoose = require('mongoose');
 
-// ─── Economic Impact Sub-Schema ────────────────────────────────────────────────
-const economicImpactSchema = new mongoose.Schema(
-  {
-    gdpLossBillionUSD: { type: Number, default: 0 },
-    infrastructureDamageUSD: { type: Number, default: 0 },
-    displacedPeople: { type: Number, default: 0 },
-    unemploymentRatePercent: { type: Number, default: 0 },
-    inflationRatePercent: { type: Number, default: 0 },
-    tradeDisruptionUSD: { type: Number, default: 0 },
-    aidReceivedUSD: { type: Number, default: 0 },
-  },
-  { _id: false }
-);
-
-// ─── Casualties Sub-Schema ─────────────────────────────────────────────────────
-const casualtiesSchema = new mongoose.Schema(
-  {
-    military: { type: Number, default: 0 },
-    civilian: { type: Number, default: 0 },
-    wounded: { type: Number, default: 0 },
-    missing: { type: Number, default: 0 },
-  },
-  { _id: false }
-);
-
-// ─── Main Conflict Schema ──────────────────────────────────────────────────────
+// ─── War Economic Impact Conflict Schema ───────────────────────────────────────
+// Based on war_economic_impact_dataset.json flat structure
 const conflictSchema = new mongoose.Schema(
   {
-    conflictId: {
-      type: String,
-      required: [true, 'Conflict ID is required'],
-      unique: true,
-      trim: true,
-      index: true,
-    },
-    name: {
+    // ── Identity Fields ────────────────────────────────────────────────────────
+    Conflict_Name: {
       type: String,
       required: [true, 'Conflict name is required'],
       trim: true,
-      maxlength: [200, 'Name cannot exceed 200 characters'],
-    },
-    type: {
-      type: String,
-      enum: ['Civil War', 'Interstate War', 'Proxy War', 'Insurgency', 'Terrorism', 'Other'],
-      default: 'Other',
-    },
-    status: {
-      type: String,
-      enum: ['Active', 'Resolved', 'Frozen', 'Escalating'],
-      default: 'Active',
       index: true,
     },
-    region: {
+    Conflict_Type: {
       type: String,
-      required: [true, 'Region is required'],
+      trim: true,
+      index: true,
+    },
+    Region: {
+      type: String,
       trim: true,
       index: true,
     },
-    country: {
-      type: String,
-      required: [true, 'Country is required'],
-      trim: true,
-      index: true,
-    },
-    startDate: {
-      type: Date,
-      required: [true, 'Start date is required'],
-    },
-    endDate: {
-      type: Date,
-      default: null,
-    },
-    durationDays: {
-      type: Number,
-      default: 0,
-    },
-    casualties: {
-      type: casualtiesSchema,
-      default: () => ({}),
-    },
-    economicImpact: {
-      type: economicImpactSchema,
-      default: () => ({}),
-    },
-    involvedParties: {
-      type: [String],
-      default: [],
-    },
-    weaponsUsed: {
-      type: [String],
-      default: [],
-    },
-    internationalSanctions: {
-      type: Boolean,
-      default: false,
-    },
-    peaceAgreements: {
-      type: [String],
-      default: [],
-    },
-    description: {
+    Start_Year: {
       type: String,
       trim: true,
-      maxlength: [2000, 'Description cannot exceed 2000 characters'],
-    },
-    tags: {
-      type: [String],
-      default: [],
       index: true,
     },
-    isDeleted: {
-      type: Boolean,
-      default: false,
+    End_Year: {
+      type: String,
+      trim: true,
+    },
+    Status: {
+      type: String,
+      trim: true,
       index: true,
     },
+    Primary_Country: {
+      type: String,
+      trim: true,
+      index: true,
+    },
+
+    // ── Unemployment Fields ────────────────────────────────────────────────────
+    'Pre_War_Unemployment_%': { type: Number, default: 0 },
+    'During_War_Unemployment_%': { type: Number, default: 0 },
+    Unemployment_Spike_Percentage_Points: { type: Number, default: 0 },
+    Most_Affected_Sector: { type: String, trim: true, index: true },
+    'Youth_Unemployment_Change_%': { type: Number, default: 0 },
+
+    // ── Poverty Fields ────────────────────────────────────────────────────────
+    'Pre_War_Poverty_Rate_%': { type: Number, default: 0 },
+    'During_War_Poverty_Rate_%': { type: Number, default: 0 },
+    'Extreme_Poverty_Rate_%': { type: Number, default: 0 },
+    'Food_Insecurity_Rate_%': { type: Number, default: 0 },
+    Households_Fallen_Into_Poverty_Estimate: { type: Number, default: 0 },
+
+    // ── Economic Fields ───────────────────────────────────────────────────────
+    'GDP_Change_%': { type: Number, default: 0 },
+    'Inflation_Rate_%': { type: Number, default: 0, index: true },
+    'Currency_Devaluation_%': { type: Number, default: 0 },
+    Cost_of_War_USD: { type: Number, default: 0 },
+    Estimated_Reconstruction_Cost_USD: { type: Number, default: 0 },
+
+    // ── Informal Economy Fields ───────────────────────────────────────────────
+    'Informal_Economy_Size_Pre_War_%': { type: Number, default: 0 },
+    'Informal_Economy_Size_During_War_%': { type: Number, default: 0 },
+
+    // ── Black Market Fields ───────────────────────────────────────────────────
+    Black_Market_Activity_Level: {
+      type: String,
+      enum: ['Low', 'Moderate', 'High', 'Dominant', 'N/A'],
+      default: 'N/A',
+      index: true,
+    },
+    Primary_Black_Market_Goods: { type: String, trim: true },
+    'Currency_Black_Market_Rate_Gap_%': { type: Number, default: 0 },
+    War_Profiteering_Documented: {
+      type: String,
+      enum: ['Yes', 'No'],
+      default: 'No',
+    },
+
+    // ── Soft Delete ───────────────────────────────────────────────────────────
+    isDeleted: { type: Boolean, default: false, index: true },
   },
   {
-    timestamps: true,       // adds createdAt & updatedAt automatically
+    timestamps: true,
     versionKey: false,
+    strict: false, // allow extra fields from dataset
   }
 );
 
-// ─── Index for text-based search ───────────────────────────────────────────────
-conflictSchema.index({ name: 'text', description: 'text', country: 'text' });
-
-// ─── Virtual: total casualties ─────────────────────────────────────────────────
-conflictSchema.virtual('totalCasualties').get(function () {
-  const c = this.casualties;
-  return (c.military || 0) + (c.civilian || 0) + (c.wounded || 0) + (c.missing || 0);
-});
-
-// ─── Pre-save: auto-calculate duration ────────────────────────────────────────
-conflictSchema.pre('save', function (next) {
-  if (this.startDate) {
-    const end = this.endDate || new Date();
-    this.durationDays = Math.floor((end - this.startDate) / (1000 * 60 * 60 * 24));
-  }
-  next();
+// ─── Text Index for Search ─────────────────────────────────────────────────────
+conflictSchema.index({
+  Conflict_Name: 'text',
+  Primary_Country: 'text',
+  Region: 'text',
+  Conflict_Type: 'text',
+  Most_Affected_Sector: 'text',
+  Primary_Black_Market_Goods: 'text',
 });
 
 module.exports = mongoose.model('Conflict', conflictSchema);
